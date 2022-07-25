@@ -31,6 +31,12 @@
 
                 android:background="@mipmap/ic_thumb_down_round"
                 android:rotation="180" />
+
+            <ImageButton
+                android:id="@+id/close"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@mipmap/ic_close_round" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

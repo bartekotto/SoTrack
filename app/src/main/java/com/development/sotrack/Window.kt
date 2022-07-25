@@ -9,9 +9,11 @@ import android.graphics.PixelFormat
 import android.os.Build
 import android.view.*
 import android.widget.ImageButton
-import com.development.sotrack.R.*
+import com.development.sotrack.R.id
+import com.development.sotrack.R.layout
+import com.development.sotrack.log.Log
+import com.development.sotrack.log.LogListHolder
 import java.util.*
-
 
 class Window(
     private val context: Context
@@ -55,14 +57,17 @@ class Window(
 
     private fun assignClickListener(imageButton: ImageButton) {
         imageButton.setOnClickListener {
-            val newLog: Log = Log(
+            val newLog = Log(
                 UUID.randomUUID(),
                 "temporary",
+                Calendar.DAY_OF_YEAR,
                 Date(System.currentTimeMillis()),
                 getForegroundApp(),
                 arrayOf(),
                 imageButton.id
             )
+            LogListHolder.logList.list += newLog
+
         }
     }
 
@@ -156,7 +161,7 @@ class Window(
         }
         layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         mView = layoutInflater.inflate(layout.popup_button, null)
-//        mView.findViewById<View>(id.thumb_up).setOnClickListener { close() }
+        mView.findViewById<View>(id.close).setOnClickListener { close() }
         val thumbUp: ImageButton = mView.findViewById(id.thumb_up)
         assignClickListener(mView.findViewById(id.thumb_up))
         assignClickListener(mView.findViewById(id.thumb_down))
