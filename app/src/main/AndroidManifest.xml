@@ -19,6 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SoTrack">
+        <activity
+            android:name=".DisplaySelectedTagActivity"
+            android:exported="false" />
 
         <service
             android:name=".ForegroundService"

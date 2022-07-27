@@ -15,7 +15,7 @@ import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 
-class VerticalBarChart {
+class VerticalBarChartHandler {
     fun prepareBarChart(chart: BarChart): BarChart {
 //        val data = createChartData()
         if (LogListHolder.logList.list.isEmpty()) {
@@ -93,6 +93,8 @@ class VerticalBarChart {
                 randomThumb()
             )
     }
+
+
 
     private fun randomApp(): String {
         val list = listOf("instagram", "twitter", "reddit", "")

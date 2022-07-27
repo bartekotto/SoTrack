@@ -2,14 +2,12 @@ package com.development.sotrack
 
 import AnalysisFragment
 import ButtonFragment
-import MainFragment
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.github.mikephil.charting.charts.BarChart
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
