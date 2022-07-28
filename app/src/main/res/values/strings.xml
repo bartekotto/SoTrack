@@ -4,4 +4,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="view_logs">View Logs</string>
     <string name="element_text">Tag</string>
+    <string name="thumbs_down">Thumbs down</string>
+    <string name="thumbs_up">Thumbs up</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
 </resources>

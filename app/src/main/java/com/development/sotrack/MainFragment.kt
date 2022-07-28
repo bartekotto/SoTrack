@@ -6,6 +6,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.development.sotrack.displaySelectedTag.SelectedTagActivity
+import com.development.sotrack.displaySelectedTag.SpacingItem
 import com.development.sotrack.log.LogListHolder
 import com.github.mikephil.charting.charts.BarChart
 
@@ -49,7 +51,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun generateIntent(selectedTag: String): Intent {
-        return Intent(context, DisplaySelectedTagActivity::class.java).apply {
+        return Intent(context, SelectedTagActivity::class.java).apply {
             putExtra("selectedTag", selectedTag)
         }
     }

@@ -1,4 +1,4 @@
-package com.development.sotrack
+package com.development.sotrack.displaySelectedTag
 
 import android.graphics.Rect
 import android.view.View

@@ -1,6 +1,5 @@
 package com.development.sotrack
 
-import AnalysisFragment
 import ButtonFragment
 import android.content.Intent
 import android.os.Build

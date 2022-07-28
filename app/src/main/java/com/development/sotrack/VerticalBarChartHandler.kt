@@ -50,36 +50,22 @@ class VerticalBarChartHandler {
         val labels = listOf("M", "T", "W", "T", "F", "S", "S", "M", "T", "W")
         for (i in 0..9) {
             val thumbsUp: Float = logList.list.filter { it.date == Calendar.DAY_OF_YEAR - i }
-                .filter { it.buttonValue == 0 }.size.toFloat()
+                .filter { it.buttonValue == R.drawable.ic_thumb_down_foreground }.size.toFloat()
             val thumbsDown: Float = logList.list.filter { it.date == Calendar.DAY_OF_YEAR - i }
-                .filter { it.buttonValue == 1 }.size.toFloat()
+                .filter { it.buttonValue == R.drawable.ic_thumb_up_foreground }.size.toFloat()
             values.add(BarEntry(i.toFloat(), floatArrayOf(thumbsUp, thumbsDown)))
         }
         Collections.rotate(labels, Calendar.DAY_OF_WEEK)
         val barDataSet = BarDataSet(values, "whatevs")
         val dataSets: ArrayList<IBarDataSet> = ArrayList()
         dataSets.add(barDataSet)
-        barDataSet.colors = listOf(ColorTemplate.PASTEL_COLORS[1],ColorTemplate.PASTEL_COLORS[3])
+        barDataSet.colors = listOf(ColorTemplate.PASTEL_COLORS[1], ColorTemplate.PASTEL_COLORS[3])
         barDataSet.stackLabels = labels.toTypedArray()
         chart.data = BarData(dataSets)
         chart.data.barWidth = 0.5f
         chart.invalidate()
         return chart
     }
-//
-//    private fun createChartData(): BarData {
-//        val values: ArrayList<BarEntry> = ArrayList()
-//        for (i in 0 until MAX_X_VALUE) {
-//            val x = i.toFloat()
-//            val y: Float = LogListHolder.logList.list.size.toFloat()
-//            values.add(BarEntry(x, y))
-//        }
-//        val set1 = BarDataSet(values, SET_LABEL)
-//        val dataSets: ArrayList<IBarDataSet> = ArrayList()
-//        dataSets.add(set1)
-//        return BarData(dataSets)
-//    }
-
 
     private fun populateLogList(amount: Int, logList: LogList) {
         for (i in 1..amount)
@@ -95,15 +81,14 @@ class VerticalBarChartHandler {
     }
 
 
-
     private fun randomApp(): String {
-        val list = listOf("instagram", "twitter", "reddit", "")
+        val list = listOf("instagram", "twitter", "reddit", "tiktok")
         val randomIndex = Random.nextInt(list.size);
         return list[randomIndex]
     }
 
     private fun randomThumb(): Int {
-        val list = listOf(0, 1)
+        val list = listOf(R.drawable.ic_thumb_down_foreground, R.drawable.ic_thumb_up_foreground)
         val randomIndex = Random.nextInt(list.size);
         return list[randomIndex]
     }

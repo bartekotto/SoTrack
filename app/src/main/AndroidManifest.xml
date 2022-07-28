@@ -20,8 +20,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoTrack">
         <activity
-            android:name=".DisplaySelectedTagActivity"
+            android:name=".displaySelectedTag.SelectedLogActivity"
             android:exported="false" />
+        <activity
+            android:name=".displaySelectedTag.SelectedTagActivity"
+            android:exported="false" />
+
 
         <service
             android:name=".ForegroundService"

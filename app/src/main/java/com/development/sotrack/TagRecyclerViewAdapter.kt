@@ -42,7 +42,7 @@ class TagViewHolder constructor(
     tagView: View
 ) : RecyclerView.ViewHolder(tagView) {
 
-    private val tagTextView: TextView = tagView.findViewById(R.id.tagTextView)
+    private val tagTextView: TextView = tagView.findViewById(R.id.tag_text_view)
     fun bind(tag: String, clickListener: (String) -> Unit) {
         tagTextView.text = tag
         tagTextView.setOnClickListener { clickListener(tag) }
