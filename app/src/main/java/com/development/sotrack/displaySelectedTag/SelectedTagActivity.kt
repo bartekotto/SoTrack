@@ -80,6 +80,7 @@ class SelectedTagActivity : AppCompatActivity() {
         )
 
         return dates
+        TODO("fix empty feild null")
     }
 
     private fun setSelectedTagTextView() {
@@ -94,7 +95,7 @@ class SelectedTagActivity : AppCompatActivity() {
             val spacingItem = SpacingItem(20)
             addItemDecoration(spacingItem)
             selectedTagAdapter =
-                SelectedTagAdapter { selectedUUID: UUID -> articleClicked(selectedUUID) }
+                SelectedTagAdapter { selectedUUID: UUID -> logClicked(selectedUUID) }
             adapter = selectedTagAdapter
         }
     }
@@ -117,7 +118,7 @@ class SelectedTagActivity : AppCompatActivity() {
         TODO("fix the buttons!")
     }
 
-    private fun articleClicked(selectedLog: UUID) {
+    private fun logClicked(selectedLog: UUID) {
         startActivity(generateIntent(selectedLog))
     }
 

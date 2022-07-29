@@ -35,19 +35,24 @@
             android:layout_width="103dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Button" />
+            android:backgroundTint="#00FFFFFF"
+            android:text="Button"
+            app:srcCompat="@mipmap/ic_average_foreground" />
 
         <ImageButton
             android:id="@+id/button3"
             android:layout_width="107dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Button" />
+            android:backgroundTint="#00FFFFFF"
+            android:text="Button"
+            app:srcCompat="@mipmap/ic_filter_icon_foreground" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="410dp"
-        android:layout_height="373dp"
+        android:id="@+id/discovery_rv"
+        android:layout_width="419dp"
+        android:layout_height="374dp"
         android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
