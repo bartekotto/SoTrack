@@ -75,11 +75,12 @@
             android:layout_height="48dp"
             android:backgroundTint="#00FFFFFF"
             android:text="Button"
-            app:srcCompat="@mipmap/ic_filter_icon_foreground" />
+            app:srcCompat="@mipmap/ic_filter_icon_foreground"
+            android:contentDescription="@string/filter_icon" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="272dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="1" />
 
     </LinearLayout>

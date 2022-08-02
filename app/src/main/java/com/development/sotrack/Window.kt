@@ -57,11 +57,13 @@ class Window(
 
     private fun assignClickListener(imageButton: ImageButton) {
         imageButton.setOnClickListener {
+            val cal: Calendar = Calendar.getInstance()
+            cal.time = Date(System.currentTimeMillis())
             val newLog = Log(
                 UUID.randomUUID(),
                 "temporary",
                 Calendar.DAY_OF_YEAR,
-                Date(System.currentTimeMillis()),
+                cal,
                 getForegroundApp(),
                 arrayOf(),
                 imageButton.id

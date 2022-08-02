@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SoTrack">
         <activity
-            android:name=".AverageActivity"
+            android:name="com.development.sotrack.average.AverageActivity"
             android:exported="false" />
         <activity
             android:name=".displaySelectedTag.SelectedLogActivity"

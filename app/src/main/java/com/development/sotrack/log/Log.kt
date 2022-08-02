@@ -6,7 +6,7 @@ data class Log(
     val id: UUID,
     val screenshot: String,
     val date : Int,
-    val exactTime: Date,
+    val exactTime: Calendar,
     val app: String,
     val tags: Array<String>,
     val buttonValue: Int

@@ -16,13 +16,21 @@ import kotlin.random.Random
 
 
 class VerticalBarChartHandler {
-    fun prepareBarChart(chart: BarChart): BarChart {
+    fun prepareBarChart(chart: BarChart, dataFormat: Int = 3): BarChart {
 //        val data = createChartData()
         if (LogListHolder.logList.list.isEmpty()) {
             populateLogList(100, LogListHolder.logList)
         }
         configureChartAppearance(chart)
-        prepareChartData(chart, LogListHolder.logList)
+        if (dataFormat == 3) {
+            prepareChartData(
+                listOf("M", "T", "W", "T", "F", "S", "S", "M", "T", "W"),
+                chart,
+                LogListHolder.logList
+            )
+        } else {
+            prepareChartDataAverage(dataFormat, chart, LogListHolder.logList)
+        }
         return chart
     }
 
@@ -45,10 +53,13 @@ class VerticalBarChartHandler {
     }
 
 
-    private fun prepareChartData(chart: BarChart, logList: LogList): BarChart {
+    private fun prepareChartData(
+        labels: List<String>,
+        chart: BarChart,
+        logList: LogList
+    ): BarChart {
         val values: ArrayList<BarEntry> = ArrayList()
-        val labels = listOf("M", "T", "W", "T", "F", "S", "S", "M", "T", "W")
-        for (i in 0..9) {
+        for (i in labels.indices) {
             val thumbsUp: Float = logList.list.filter { it.date == Calendar.DAY_OF_YEAR - i }
                 .filter { it.buttonValue == R.drawable.ic_thumb_down_foreground }.size.toFloat()
             val thumbsDown: Float = logList.list.filter { it.date == Calendar.DAY_OF_YEAR - i }
@@ -56,7 +67,7 @@ class VerticalBarChartHandler {
             values.add(BarEntry(i.toFloat(), floatArrayOf(thumbsUp, thumbsDown)))
         }
         Collections.rotate(labels, Calendar.DAY_OF_WEEK)
-        val barDataSet = BarDataSet(values, "whatevs")
+        val barDataSet = BarDataSet(values, "")
         val dataSets: ArrayList<IBarDataSet> = ArrayList()
         dataSets.add(barDataSet)
         barDataSet.colors = listOf(ColorTemplate.PASTEL_COLORS[1], ColorTemplate.PASTEL_COLORS[3])
@@ -67,17 +78,94 @@ class VerticalBarChartHandler {
         return chart
     }
 
+    private fun prepareChartDataAverage(scale: Int, chart: BarChart, logList: LogList): BarChart {
+        var values: ArrayList<BarEntry> = ArrayList()
+        var labels = listOf<String>()
+        when (scale) {
+            0 -> {
+                labels = listOf("M", "T", "W", "T", "F", "S", "S")
+                values =
+                    extractAverages(labels, logList, values, Calendar.DAY_OF_WEEK)
+            }
+            1 -> {
+                labels = listOf(
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6",
+                    "7",
+                    "8",
+                    "9",
+                    "10",
+                    "11",
+                    "12",
+                    "13",
+                    "14",
+                    "15",
+                    "16",
+                    "17",
+                    "18",
+                    "19",
+                    "20",
+                    "21",
+                    "22",
+                    "23",
+                    "24"
+                )
+                values =
+                    extractAverages(labels, logList, values, Calendar.HOUR_OF_DAY)
+            }
+
+            2 -> {
+                labels = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
+                values =
+                    extractAverages(labels, logList, values, Calendar.MONTH)
+            }
+        }
+        val barDataSet = BarDataSet(values, "")
+        val dataSets: ArrayList<IBarDataSet> = ArrayList()
+        dataSets.add(barDataSet)
+        barDataSet.colors = listOf(ColorTemplate.PASTEL_COLORS[1], ColorTemplate.PASTEL_COLORS[3])
+        barDataSet.stackLabels = labels.toTypedArray()
+        chart.data = BarData(dataSets)
+        chart.data.barWidth = 0.5f
+        chart.invalidate()
+        return chart
+    }
+
+    private fun extractAverages(
+        labels: List<String>,
+        logList: LogList,
+        averages: ArrayList<BarEntry>,
+        timeFrame: Int
+    ): ArrayList<BarEntry> {
+        for (i in labels.indices) {
+//                logList.list.filter { it.exactTime.get(timeFrame) == i+1 && it.buttonValue == R.drawable.ic_thumb_up_foreground }.size.toFloat()
+//                logList.list.filter { it.exactTime.get(timeFrame) == i+1 && it.buttonValue == R.drawable.ic_thumb_down_foreground }.size.toFloat()
+            averages += BarEntry(i.toFloat(), floatArrayOf((0..10).random().toFloat(),(0..10).random().toFloat()))
+        }
+        return averages
+    }
+
     private fun populateLogList(amount: Int, logList: LogList) {
-        for (i in 1..amount)
+        val cal: Calendar = Calendar.getInstance()
+        for (i in 1..amount) {
+            cal.time =
+                (Date(System.currentTimeMillis() - (24 * 60 * 60 * 1000) * Random.nextInt(11)))
+            cal.set(Calendar.DAY_OF_WEEK, (1..7).random())
+            cal.set(Calendar.HOUR_OF_DAY, (1..24).random())
             logList.list += Log(
                 UUID.randomUUID(),
                 "temporary",
                 Calendar.DAY_OF_YEAR - Random.nextInt(11),
-                Date(System.currentTimeMillis() - (24 * 60 * 60 * 1000) * Random.nextInt(11)),
+                cal,
                 randomApp(),
                 arrayOf(),
                 randomThumb()
             )
+        }
     }
 
 

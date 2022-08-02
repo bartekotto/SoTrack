@@ -3,10 +3,12 @@ package com.development.sotrack
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.development.sotrack.R
+import com.development.sotrack.average.AverageActivity
 import com.development.sotrack.displaySelectedTag.SelectedLogActivity
 import com.development.sotrack.displaySelectedTag.SelectedTagAdapter
 import com.development.sotrack.displaySelectedTag.SpacingItem
@@ -23,6 +25,7 @@ class AnalysisFragment : Fragment(R.layout.fragment_analysis) {
         populateList()
         recyclerView()
         populateBarChart(view)
+        setFilterButtonClickListener()
 
     }
 
@@ -35,6 +38,12 @@ class AnalysisFragment : Fragment(R.layout.fragment_analysis) {
             analysisDiscoveryAdapter =
                 AnalysisDiscoveryAdapter { selectedID: Int -> discoveryClicked(selectedID) }
             adapter = analysisDiscoveryAdapter
+        }
+    }
+
+    private fun setFilterButtonClickListener(){
+        view?.findViewById<ImageButton>(R.id.average_button_ib)?.setOnClickListener {
+            startActivity(Intent(context, AverageActivity::class.java))
         }
     }
 
