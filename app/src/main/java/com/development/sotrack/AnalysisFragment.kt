@@ -63,7 +63,7 @@ class AnalysisFragment : Fragment(R.layout.fragment_analysis) {
         verticalBarChartHandler.prepareBarChart(verticalBarChart)
     }
 
-    fun populateList() {
+    private fun populateList() {
         val discovery1: Discovery = Discovery(
             1,
             "Trend Discovered",

@@ -57,7 +57,7 @@ class SelectedTagActivity : AppCompatActivity() {
     private fun filterOnClickListener() {
         val checkedInteractions: MutableList<Int> = extractCheckboxes()
         val dateRange: MutableList<Date> = extractDates()
-        addFilteredData(dateRange,checkedInteractions)
+        addFilteredData(dateRange, checkedInteractions)
     }
 
     private fun extractCheckboxes(): MutableList<Int> {
@@ -103,17 +103,20 @@ class SelectedTagActivity : AppCompatActivity() {
 
     private fun addData() {
         val data = LogListHolder.logList.list.filter {
-            it.app == selectedTag || it.tags.contains(selectedTag)
+            it.tags == selectedTag
         }
         selectedTagAdapter.submitList(data)
     }
 
-    private fun addFilteredData(dateRange : MutableList<Date>, checkedInteractions : MutableList<Int>) {
+    private fun addFilteredData(
+        dateRange: MutableList<Date>,
+        checkedInteractions: MutableList<Int>
+    ) {
         var data = LogListHolder.logList.list.filter {
-            it.app == selectedTag || it.tags.contains(selectedTag)
+            it.tags == selectedTag
         }
         data = data.filter { checkedInteractions.contains(it.buttonValue) }
-        data = data.filter { it.exactTime.before(dateRange[1]) && it.exactTime.after(dateRange[0])}
+        data = data.filter { it.exactTime.before(dateRange[1]) && it.exactTime.after(dateRange[0]) }
         selectedTagAdapter.submitList(data)
         TODO("fix the buttons!")
     }

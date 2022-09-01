@@ -5,9 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import java.lang.UnsupportedOperationException
 
@@ -18,37 +16,27 @@ class ForegroundService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        // create the custom or default notification
-        // based on the android version
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) startMyOwnForeground() else startForeground(
-            1,
-            Notification()
-        )
-
-        // create an instance of Window class
-        // and display the content on screen
-        val window = Window(this)
-        window.open()
+        startForeground()
+        val buttonHandler = ButtonHandler(this)
+        buttonHandler.open()
     }
 
+
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        startForeground()
         return super.onStartCommand(intent, flags, startId)
     }
 
-    // for android version >=O we need to create
-    // custom notification stating
-    // foreground service is running
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun startMyOwnForeground() {
+    private fun startForeground() {
         val NOTIFICATION_CHANNEL_ID = "example.permanence"
         val channelName = "Background Service"
-        val chan = NotificationChannel(
+        val channel = NotificationChannel(
             NOTIFICATION_CHANNEL_ID,
             channelName,
             NotificationManager.IMPORTANCE_MIN
         )
         val manager = (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
-        manager.createNotificationChannel(chan)
+        manager.createNotificationChannel(channel)
         val notificationBuilder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
         val notification = notificationBuilder.setOngoing(true)
             .setContentTitle("Service running")

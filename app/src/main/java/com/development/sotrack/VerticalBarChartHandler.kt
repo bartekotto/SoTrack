@@ -11,16 +11,12 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.utils.ColorTemplate
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 
 class VerticalBarChartHandler {
     fun prepareBarChart(chart: BarChart, dataFormat: Int = 3): BarChart {
-//        val data = createChartData()
-        if (LogListHolder.logList.list.isEmpty()) {
-            populateLogList(100, LogListHolder.logList)
-        }
+        populateLogList(100, LogListHolder.logList)
         configureChartAppearance(chart)
         if (dataFormat == 3) {
             prepareChartData(
@@ -33,6 +29,7 @@ class VerticalBarChartHandler {
         }
         return chart
     }
+
 
     private fun configureChartAppearance(chart: BarChart): BarChart {
         chart.description.isEnabled = false
@@ -48,6 +45,7 @@ class VerticalBarChartHandler {
         axisRight.setDrawGridLines(false)
         axisRight.granularity = 10f
         axisRight.axisMinimum = 0f
+        chart.legend.isEnabled = false
         chart.setDrawBorders(false)
         return chart
     }
@@ -61,20 +59,15 @@ class VerticalBarChartHandler {
         val values: ArrayList<BarEntry> = ArrayList()
         for (i in labels.indices) {
             val thumbsUp: Float = logList.list.filter { it.date == Calendar.DAY_OF_YEAR - i }
-                .filter { it.buttonValue == R.drawable.ic_thumb_down_foreground }.size.toFloat()
+                .filter { it.buttonValue == 1 }.size.toFloat()
             val thumbsDown: Float = logList.list.filter { it.date == Calendar.DAY_OF_YEAR - i }
-                .filter { it.buttonValue == R.drawable.ic_thumb_up_foreground }.size.toFloat()
+                .filter { it.buttonValue == 0 }.size.toFloat()
             values.add(BarEntry(i.toFloat(), floatArrayOf(thumbsUp, thumbsDown)))
         }
         Collections.rotate(labels, Calendar.DAY_OF_WEEK)
         val barDataSet = BarDataSet(values, "")
         val dataSets: ArrayList<IBarDataSet> = ArrayList()
-        dataSets.add(barDataSet)
-        barDataSet.colors = listOf(ColorTemplate.PASTEL_COLORS[1], ColorTemplate.PASTEL_COLORS[3])
-        barDataSet.stackLabels = labels.toTypedArray()
-        chart.data = BarData(dataSets)
-        chart.data.barWidth = 0.5f
-        chart.invalidate()
+        finalizeDataSets(dataSets, barDataSet, labels, chart)
         return chart
     }
 
@@ -126,13 +119,22 @@ class VerticalBarChartHandler {
         }
         val barDataSet = BarDataSet(values, "")
         val dataSets: ArrayList<IBarDataSet> = ArrayList()
+        finalizeDataSets(dataSets, barDataSet, labels, chart)
+        return chart
+    }
+
+    private fun finalizeDataSets(
+        dataSets: ArrayList<IBarDataSet>,
+        barDataSet: BarDataSet,
+        labels: List<String>,
+        chart: BarChart
+    ) {
         dataSets.add(barDataSet)
         barDataSet.colors = listOf(ColorTemplate.PASTEL_COLORS[1], ColorTemplate.PASTEL_COLORS[3])
         barDataSet.stackLabels = labels.toTypedArray()
         chart.data = BarData(dataSets)
         chart.data.barWidth = 0.5f
         chart.invalidate()
-        return chart
     }
 
     private fun extractAverages(
@@ -142,9 +144,11 @@ class VerticalBarChartHandler {
         timeFrame: Int
     ): ArrayList<BarEntry> {
         for (i in labels.indices) {
-//                logList.list.filter { it.exactTime.get(timeFrame) == i+1 && it.buttonValue == R.drawable.ic_thumb_up_foreground }.size.toFloat()
-//                logList.list.filter { it.exactTime.get(timeFrame) == i+1 && it.buttonValue == R.drawable.ic_thumb_down_foreground }.size.toFloat()
-            averages += BarEntry(i.toFloat(), floatArrayOf((0..10).random().toFloat(),(0..10).random().toFloat()))
+            averages += BarEntry(
+                i.toFloat(),
+                logList.list.filter { it.exactTime.get(timeFrame) == i + 1 && it.buttonValue == 1 }.size.toFloat(),
+                logList.list.filter { it.exactTime.get(timeFrame) == i + 1 && it.buttonValue == 0 }.size.toFloat()
+            )
         }
         return averages
     }
@@ -158,11 +162,9 @@ class VerticalBarChartHandler {
             cal.set(Calendar.HOUR_OF_DAY, (1..24).random())
             logList.list += Log(
                 UUID.randomUUID(),
-                "temporary",
                 Calendar.DAY_OF_YEAR - Random.nextInt(11),
                 cal,
                 randomApp(),
-                arrayOf(),
                 randomThumb()
             )
         }
@@ -176,14 +178,14 @@ class VerticalBarChartHandler {
     }
 
     private fun randomThumb(): Int {
-        val list = listOf(R.drawable.ic_thumb_down_foreground, R.drawable.ic_thumb_up_foreground)
+        val list = listOf(0, 1)
         val randomIndex = Random.nextInt(list.size);
         return list[randomIndex]
     }
-
-    companion object {
-        private const val MAX_X_VALUE = 7
-        private const val MAX_Y_VALUE = 50
-        private const val MIN_Y_VALUE = 5
-    }
+//
+//    companion object {
+//        private const val MAX_X_VALUE = 7
+//        private const val MAX_Y_VALUE = 50
+//        private const val MIN_Y_VALUE = 5
+//    }
 }

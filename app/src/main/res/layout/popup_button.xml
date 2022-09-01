@@ -37,6 +37,19 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@mipmap/ic_close_round" />
+
+            <Spinner
+                android:id="@+id/tag_spinner_hover"
+                android:layout_width="208dp"
+                android:layout_height="44dp"
+                android:layout_marginTop="41dp"
+                android:layout_marginBottom="208dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.078"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tag_name_input" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

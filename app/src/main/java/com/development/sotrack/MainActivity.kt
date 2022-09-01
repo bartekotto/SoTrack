@@ -1,13 +1,17 @@
 package com.development.sotrack
 
-import ButtonFragment
+import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.development.sotrack.log.Log
+import com.development.sotrack.log.LogList
+import com.development.sotrack.log.LogListHolder
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.Gson
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,9 +19,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val firstFragment = ButtonFragment()
+        val firstFragment = SettingsFragment()
         val secondFragment = MainFragment()
         val thirdFragment = AnalysisFragment()
+        LogListHolder.logList.list = readLogListFromStorage()
 
         setCurrentFragment(secondFragment)
 
@@ -40,32 +45,36 @@ class MainActivity : AppCompatActivity() {
             commit()
         }
 
-    fun startService() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (Settings.canDrawOverlays(this)) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(Intent(this, ForegroundService::class.java))
-                } else {
-                    startService(Intent(this, ForegroundService::class.java))
-                }
-            }
-        } else {
-            startService(Intent(this, ForegroundService::class.java))
+    private fun startService() {
+        if (Settings.canDrawOverlays(this)) {
+            startForegroundService(Intent(this, ForegroundService::class.java))
         }
     }
 
-    fun checkOverlayPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                // send user to the device settings
-                val myIntent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
-                startActivity(myIntent)
-            }
+    private fun checkOverlayPermission() {
+        if (!Settings.canDrawOverlays(this)) {
+            // send user to the device settings
+            val myIntent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
+            startActivity(myIntent)
         }
     }
 
     override fun onResume() {
         super.onResume()
+        readLogListFromStorage()
         startService()
     }
+
+    private fun readLogListFromStorage(): List<Log> {
+        val sharedPreference = getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+        val gson = Gson()
+        var json: String = sharedPreference.getString("MyObject", "")!!
+        if (json.isNotEmpty())
+            LogListHolder.logList.list = gson.fromJson(json, LogList::class.java).list
+        json = sharedPreference.getString("taglist", "")!!
+        if (json.isNotEmpty())
+            LogListHolder.tagList = gson.fromJson(json, List::class.java) as List<String>
+        return LogListHolder.logList.list
+    }
+
 }

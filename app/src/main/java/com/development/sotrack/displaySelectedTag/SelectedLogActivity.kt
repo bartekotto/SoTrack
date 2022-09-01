@@ -9,7 +9,7 @@ import com.development.sotrack.log.Log
 import com.development.sotrack.log.LogListHolder
 import java.util.*
 
-class SelectedLogActivity : AppCompatActivity() {
+    class SelectedLogActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.selected_log_display)

@@ -42,8 +42,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun addData() {
-        val data = LogListHolder.logList.list.map { it.app }.distinct()
-        tagRecyclerViewAdapter.submitList(data)
+        tagRecyclerViewAdapter.submitList(LogListHolder.tagList)
     }
 
     private fun articleClicked(selectedTag: String) {
